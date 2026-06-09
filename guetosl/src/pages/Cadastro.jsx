@@ -1,9 +1,14 @@
-function Login() {
+function Cadastro() {
   return (
     <div className="d-flex justify-content-center align-items-center" style={{minHeight: '90vh'}}>
       <div className="card p-4 shadow" style={{width: '400px'}}>
         
-        <h2 className="text-center mb-4">Entrar</h2>
+        <h2 className="text-center mb-4">Cadastre-se</h2>
+
+        <div className="mb-3">
+          <label className="form-label">Nome completo</label>
+          <input type="text" className="form-control" placeholder="Digite seu nome" />
+        </div>
 
         <div className="mb-3">
           <label className="form-label">Email</label>
@@ -15,10 +20,15 @@ function Login() {
           <input type="password" className="form-control" placeholder="Digite sua senha" />
         </div>
 
-        <button className="btn btn-dark w-100 mt-2">Entrar</button>
+        <div className="mb-3">
+          <label className="form-label">Confirmar Senha</label>
+          <input type="password" className="form-control" placeholder="Confirme sua senha" />
+        </div>
+
+        <button className="btn btn-dark w-100 mt-2">Cadastrar</button>
 
         <p className="text-center mt-3">
-          Não tem conta? <a href="/cadastro">Cadastre-se</a>
+          Já tem conta? <a href="/login">Entrar</a>
         </p>
 
       </div>
@@ -26,4 +36,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Cadastro;

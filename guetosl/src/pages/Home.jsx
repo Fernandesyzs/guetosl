@@ -10,7 +10,7 @@ function Home() {
       </div>
 
       {/* Seção de destaques */}
-      <div className="container mt-5 p-4 rounded" style={{backgroundColor: '#ffffff', color: '#000000'}}>        <h2 className="text-center mb-4">Destaques</h2>
+      <div className="container mt-5">
         <div className="row">
 
           <div className="col-md-4">

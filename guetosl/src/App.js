@@ -5,6 +5,7 @@ import Catalogo from './pages/Catalogo';
 import Produto from './pages/Produto';
 import Carrinho from './pages/Carrinho';
 import Login from './pages/Login';
+import Cadastro from './pages/Cadastro';
 
 import Dashboard from './pages/admin/Dashboard';
 import GerenciarProdutos from './pages/admin/GerenciarProdutos';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/produto" element={<Produto />} />
         <Route path="/carrinho" element={<Carrinho />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
 
         {/* Páginas do Admin */}
         <Route path="/admin/dashboard" element={<Dashboard />} />
