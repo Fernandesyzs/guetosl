@@ -1,4 +1,4 @@
-package guetosl.produto;
+package guetosl.categoria;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -22,6 +22,15 @@ public class ProdutoService {
 
     }
 
+    //  Busca um produto específico pelo ID.
+    public Produto buscarPorId(Integer id){
+
+        // Procura o produto no banco pelo ID.
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+    }
+
     // Salva um novo produto no banco de dados.
     public Produto salvar(Produto produto) {
         return produtoRepository.save(produto);

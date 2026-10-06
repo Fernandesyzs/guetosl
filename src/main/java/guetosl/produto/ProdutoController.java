@@ -34,6 +34,14 @@ public class ProdutoController {
         return produtoService.listar();
     }
 
+    //  Responde às requisições GET feitas para /produtos/{id}.
+    @GetMapping("/{id}")
+    public Produto buscarPorId(@PathVariable Integer id) {
+
+        // Pede ao Service o produto corresponde ao ID.
+        return produtoService.buscarPorId(id);
+    }
+
     // Responde às requisições POST feitas para /produtos.
     @PostMapping
     public Produto salvar(@RequestBody Produto produto){

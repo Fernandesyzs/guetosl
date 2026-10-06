@@ -1,5 +1,6 @@
 package guetosl.produto;
 
+import guetosl.categoria.Categoria;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
@@ -98,5 +99,5 @@ public class Produto {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    
+
 }
