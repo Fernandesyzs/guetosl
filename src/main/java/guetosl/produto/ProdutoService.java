@@ -27,7 +27,7 @@ public class ProdutoService {
 
         // Procura o produto no banco pelo ID.
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado"));
 
     }
 

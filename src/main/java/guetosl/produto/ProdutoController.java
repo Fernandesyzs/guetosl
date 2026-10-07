@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 // Indica que essa classe é um Controller da API REST.
@@ -44,7 +45,7 @@ public class ProdutoController {
 
     // Responde às requisições POST feitas para /produtos.
     @PostMapping
-    public Produto salvar(@RequestBody Produto produto){
+    public Produto salvar(@RequestBody @Valid Produto produto){
         return produtoService.salvar(produto);
     }
 

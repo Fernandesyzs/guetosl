@@ -1,5 +1,6 @@
 package guetosl.produto;
 
+import jakarta.validation.constraints.Min;
 import guetosl.categoria.Categoria;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -8,7 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.DecimalMin;
 
 import java.math.BigDecimal;
 
@@ -26,12 +28,25 @@ public class Produto {
     private Integer id;
 
     // Esses atributos representam as colunas da tabela Produto.
-    private String nome;
     private String descricao;
+
+    // O preço não pode ser menor que zero.
+    @DecimalMin(value = "0.00", message = "O preço não pode ser negativo.")
     private BigDecimal preco;
+
     private String tamanho;
+
     private String cor;
+
+    // O estoque não pode ser menor que zero.
+    @Min(value = 0, message = "O estoque não pode ser negativo.")
     private Integer estoque;
+
+    // O nome é obrigatório e não pode ser apenas espaços.
+    @NotBlank(message = "O nome do produto é obrigatório.")
+    private String nome;
+
+
 
     @ManyToOne
    @JoinColumn(name = "categoria_id")
