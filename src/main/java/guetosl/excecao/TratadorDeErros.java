@@ -2,7 +2,6 @@ package guetosl.excecao;
 
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import guetosl.produto.ProdutoNaoEncontradoException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.HttpStatus;

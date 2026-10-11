@@ -1,5 +1,8 @@
-package guetosl.produto;
+package guetosl.service;
 
+import guetosl.model.entity.Produto;
+import guetosl.excecao.ProdutoNaoEncontradoException;
+import guetosl.model.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

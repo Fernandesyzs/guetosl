@@ -1,7 +1,9 @@
-package guetosl.produto;
+package guetosl.model.entity;
 
+
+import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Min;
-import guetosl.categoria.Categoria;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
@@ -53,6 +55,14 @@ public class Produto {
     private Categoria categoria;
 
 
+
+    // Relacionamento inverso: um produto pode ter uma imagem.
+    // A chave estrangeira fica na tabela Imagem, não em Produto.
+    @OneToOne(mappedBy = "produto")
+    private Imagem imagem;
+
+
+
     public Integer getId() {
         return id;
     }
@@ -83,6 +93,12 @@ public class Produto {
 
     public Categoria getCategoria() {
         return categoria;
+    }
+
+
+    // Retorna a imagem associada ao produto.
+    public Imagem getImagem() {
+        return imagem;
     }
 
     // Setter do produto

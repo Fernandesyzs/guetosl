@@ -1,6 +1,8 @@
-package guetosl.produto;
+package guetosl.controller;
 
 
+import guetosl.model.entity.Produto;
+import guetosl.service.ProdutoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,17 +32,10 @@ public class ProdutoController {
     }
 
     // Responde às requisições GET feitas para /produtos.
+
     @GetMapping
-    public List<Produto> listar(){
+    public List<Produto> listar() {
         return produtoService.listar();
-    }
-
-    //  Responde às requisições GET feitas para /produtos/{id}.
-    @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Integer id) {
-
-        // Pede ao Service o produto corresponde ao ID.
-        return produtoService.buscarPorId(id);
     }
 
     // Responde às requisições POST feitas para /produtos.

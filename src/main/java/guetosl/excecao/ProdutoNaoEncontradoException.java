@@ -1,4 +1,4 @@
-package guetosl.produto;
+package guetosl.excecao;
 
 
     // Exceção específica para quando um produto não for encontrado.

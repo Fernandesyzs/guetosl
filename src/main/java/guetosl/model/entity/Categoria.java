@@ -1,4 +1,4 @@
-package guetosl.categoria;
+package guetosl.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
