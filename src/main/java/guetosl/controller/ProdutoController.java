@@ -1,6 +1,9 @@
 package guetosl.controller;
 
 
+import guetosl.model.entity.Imagem;
+import guetosl.model.repository.ImagemRepository;
+import org.springframework.transaction.annotation.Transactional;
 import guetosl.model.entity.Produto;
 import guetosl.service.ProdutoService;
 import org.springframework.web.bind.annotation.GetMapping;

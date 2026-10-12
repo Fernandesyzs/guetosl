@@ -3,50 +3,60 @@ package guetosl.service;
 import guetosl.model.entity.Produto;
 import guetosl.excecao.ProdutoNaoEncontradoException;
 import guetosl.model.repository.ProdutoRepository;
+import guetosl.model.repository.ImagemRepository;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
-// Indica ao Spring que essa classe contém regras/lógica do sistema.
 @Service
 public class ProdutoService {
 
-    // Repository responsável por acessar os dados de Produto no banco.
     private final ProdutoRepository produtoRepository;
+    private final ImagemRepository imagemRepository;
 
-    // O Spring fornece automaticamente o ProdutoRepository aqui.
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    // O Spring fornece os repositórios necessários para o serviço.
+    public ProdutoService(
+            ProdutoRepository produtoRepository,
+            ImagemRepository imagemRepository
+    ) {
         this.produtoRepository = produtoRepository;
+        this.imagemRepository = imagemRepository;
     }
 
-    // Busca todos os produtos cadastrados no banco.
-
+    // Retorna todos os produtos cadastrados no banco.
     public List<Produto> listar() {
         return produtoRepository.findAll();
-
     }
 
-    //  Busca um produto específico pelo ID.
-    public Produto buscarPorId(Integer id){
-
-        // Procura o produto no banco pelo ID.
+    // Busca um produto pelo ID ou informa que ele não existe.
+    public Produto buscarPorId(Integer id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado"));
-
+                .orElseThrow(() ->
+                        new ProdutoNaoEncontradoException(
+                                "Produto não encontrado"
+                        )
+                );
     }
 
-    // Salva um novo produto no banco de dados.
+    // Cadastra um novo produto no banco.
     public Produto salvar(Produto produto) {
         return produtoRepository.save(produto);
     }
 
+    // Atualiza os dados de um produto já cadastrado.
     public Produto atualizar(Integer id, Produto produto) {
 
-        // Procura no banco o produto que possui o ID recebido.
+        // Primeiro, procura o produto que será atualizado.
         Produto produtoExistente = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() ->
+                        new ProdutoNaoEncontradoException(
+                                "Produto não encontrado"
+                        )
+                );
 
-        // Atualizar os dados do produto encontrado.
-
+        // Substitui os dados antigos pelos novos.
         produtoExistente.setNome(produto.getNome());
         produtoExistente.setDescricao(produto.getDescricao());
         produtoExistente.setPreco(produto.getPreco());
@@ -55,15 +65,29 @@ public class ProdutoService {
         produtoExistente.setEstoque(produto.getEstoque());
         produtoExistente.setCategoria(produto.getCategoria());
 
-        // Salvar o produto atualizado no banco.
+        // Salva as alterações no banco.
         return produtoRepository.save(produtoExistente);
     }
 
-    // Exclui um produto pelo ID.
+    // Exclui a imagem relacionada antes de excluir o produto.
+    @Transactional
     public void deletar(Integer id) {
 
-        // Procura e exclui o produto que possui esse ID.
-        produtoRepository.deleteById(id);
-    }
+        // Verifica se o produto existe.
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() ->
+                        new ProdutoNaoEncontradoException(
+                                "Produto não encontrado"
+                        )
+                );
 
+        // Se houver uma imagem associada, exclui essa imagem primeiro.
+        imagemRepository.findByProdutoId(id).ifPresent(imagem -> {
+            imagemRepository.delete(imagem);
+            imagemRepository.flush();
+        });
+
+        // Depois, exclui o produto.
+        produtoRepository.delete(produto);
+    }
 }

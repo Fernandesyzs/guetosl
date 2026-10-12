@@ -118,25 +118,30 @@ public class ImagemService {
         return imagemRepository.save(imagem);
     }
 
-    // Localiza o caminho de uma imagem salva.
+    // Localiza a imagem salva na pasta de uploads.
     public Path buscarCaminho(String nomeArquivo) throws IOException {
 
-        // Aceita apenas nomes simples de arquivos de imagem.
-        if (nomeArquivo == null
-                || !nomeArquivo.matches(
-                "[a-zA-Z0-9_-]+\\.(png|jpg|jpeg|webp)"
-        )) {
+        // Verifica se o nome foi informado.
+        if (nomeArquivo == null || nomeArquivo.isBlank()) {
             throw new IllegalArgumentException(
-                    "Nome de imagem inválido."
+                    "O nome da imagem não foi informado."
             );
         }
 
-        // Monta o caminho dentro da pasta de uploads.
-        Path caminho = pastaUploads
-                .resolve(nomeArquivo)
-                .normalize();
+        // Aceita somente nomes simples de arquivos de imagem.
+        // O nome não pode conter pastas ou caminhos externos.
+        if (!nomeArquivo.matches(
+                "[a-zA-Z0-9_-]+\\.(png|jpg|jpeg|webp)"
+        )) {
+            throw new IllegalArgumentException(
+                    "Nome de imagem inválido: " + nomeArquivo
+            );
+        }
 
-        // Confere se o caminho continua dentro da pasta.
+        // Monta o caminho completo do arquivo.
+        Path caminho = pastaUploads.resolve(nomeArquivo).normalize();
+
+        // Impede que o caminho saia da pasta de uploads.
         if (!caminho.startsWith(pastaUploads)) {
             throw new IllegalArgumentException(
                     "Caminho de imagem inválido."
