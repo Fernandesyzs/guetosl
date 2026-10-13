@@ -69,6 +69,7 @@ public class ProdutoService {
         return produtoRepository.save(produtoExistente);
     }
 
+
     // Exclui a imagem relacionada antes de excluir o produto.
     @Transactional
     public void deletar(Integer id) {
@@ -81,8 +82,13 @@ public class ProdutoService {
                         )
                 );
 
-        // Se houver uma imagem associada, exclui essa imagem primeiro.
+        // Procura uma imagem associada ao produto.
         imagemRepository.findByProdutoId(id).ifPresent(imagem -> {
+
+            // Limpa a referência do produto à imagem na memória.
+            produto.setImagem(null);
+
+            // Exclui a imagem e sincroniza essa alteração com o banco.
             imagemRepository.delete(imagem);
             imagemRepository.flush();
         });
@@ -90,4 +96,5 @@ public class ProdutoService {
         // Depois, exclui o produto.
         produtoRepository.delete(produto);
     }
+
 }

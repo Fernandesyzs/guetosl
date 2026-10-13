@@ -131,4 +131,8 @@ public class Produto {
         this.categoria = categoria;
     }
 
+    // Atualiza a imagem associada ao produto.
+    public void setImagem(Imagem imagem) {
+        this.imagem = imagem;
+    }
 }
