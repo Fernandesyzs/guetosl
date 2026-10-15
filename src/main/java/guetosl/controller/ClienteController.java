@@ -42,10 +42,37 @@ public class ClienteController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest dados) {
+        try {
+            Cliente cliente = clienteService.login(
+                    dados.email(),
+                    dados.senha()
+            );
+
+            return ResponseEntity.ok(
+                    new CadastroResponse(
+                            cliente.getId(),
+                            cliente.getNome(),
+                            cliente.getEmail(),
+                            cliente.getTelefone()
+                    )
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("E-mail ou senha inválidos.");
+        }
+    }
+
     public record CadastroRequest(
             String nome,
             String email,
             String telefone,
+            String senha
+    ) {}
+
+    public record LoginRequest(
+            String email,
             String senha
     ) {}
 

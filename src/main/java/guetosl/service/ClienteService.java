@@ -28,4 +28,20 @@ public class ClienteService {
 
         return clienteRepository.save(cliente);
     }
+
+    public Cliente login(String email, String senha) {
+        Cliente cliente = clienteRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "E-mail ou senha inválidos."
+                ));
+
+        if (cliente.getSenhaHash() == null ||
+                !passwordEncoder.matches(senha, cliente.getSenhaHash())) {
+            throw new IllegalArgumentException(
+                    "E-mail ou senha inválidos."
+            );
+        }
+
+        return cliente;
+    }
 }
