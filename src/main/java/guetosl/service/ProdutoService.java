@@ -1,3 +1,4 @@
+
 package guetosl.service;
 
 import guetosl.model.entity.Produto;
@@ -25,20 +26,33 @@ public class ProdutoService {
         this.imagemRepository = imagemRepository;
     }
 
-    // Retorna todos os produtos cadastrados no banco.
+    // Retorna todos os produtos com suas imagens carregadas.
+    @Transactional(readOnly = true)
     public List<Produto> listar() {
-        return produtoRepository.findAll();
+        List<Produto> produtos = produtoRepository.findAll();
+
+        produtos.forEach(produto ->
+                produto.getImagens().size()
+        );
+
+        return produtos;
     }
 
-    // Busca um produto pelo ID ou informa que ele não existe.
+    // Busca um produto pelo ID e carrega suas imagens.
+    @Transactional(readOnly = true)
     public Produto buscarPorId(Integer id) {
-        return produtoRepository.findById(id)
+        Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() ->
                         new ProdutoNaoEncontradoException(
                                 "Produto não encontrado"
                         )
                 );
+
+        produto.getImagens().size();
+
+        return produto;
     }
+
 
     // Cadastra um novo produto no banco.
     public Produto salvar(Produto produto) {
@@ -69,8 +83,7 @@ public class ProdutoService {
         return produtoRepository.save(produtoExistente);
     }
 
-
-    // Exclui a imagem relacionada antes de excluir o produto.
+    // Exclui todas as imagens relacionadas antes de excluir o produto.
     @Transactional
     public void deletar(Integer id) {
 
@@ -82,19 +95,17 @@ public class ProdutoService {
                         )
                 );
 
-        // Procura uma imagem associada ao produto.
-        imagemRepository.findByProdutoId(id).ifPresent(imagem -> {
+        // Procura todas as imagens associadas ao produto.
+        imagemRepository.findAllByProdutoId(id).forEach(imagem -> {
 
-            // Limpa a referência do produto à imagem na memória.
-            produto.setImagem(null);
-
-            // Exclui a imagem e sincroniza essa alteração com o banco.
+            // Exclui cada registro de imagem do banco.
             imagemRepository.delete(imagem);
-            imagemRepository.flush();
         });
+
+        // Sincroniza as exclusões antes de excluir o produto.
+        imagemRepository.flush();
 
         // Depois, exclui o produto.
         produtoRepository.delete(produto);
     }
-
 }

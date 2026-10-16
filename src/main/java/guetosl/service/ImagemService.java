@@ -102,10 +102,8 @@ public class ImagemService {
                         )
                 );
 
-        // Reutiliza a imagem existente ou cria uma nova.
-        Imagem imagem = imagemRepository
-                .findByProdutoId(produtoId)
-                .orElseGet(Imagem::new);
+        // Cria um novo registro para cada imagem enviada.
+        Imagem imagem = new Imagem();
 
         // Salva o arquivo na pasta de imagens.
         String nomeArquivo = salvarImagem(arquivo);

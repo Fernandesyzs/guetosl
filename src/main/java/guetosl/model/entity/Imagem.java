@@ -17,13 +17,12 @@ public class Imagem {
     @Column(name = "caminho", nullable = false, length = 500)
     private String caminho;
 
-    // Relacionamento: cada imagem pertence a um único produto.
+    // Relacionamento: várias imagens podem pertencer ao mesmo produto.
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
             name = "produto_id",
-            nullable = false,
-            unique = true
+            nullable = false
     )
     private Produto produto;
 

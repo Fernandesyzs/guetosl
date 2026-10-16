@@ -1,7 +1,6 @@
+
 package guetosl.model.entity;
 
-
-import jakarta.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Min;
 import jakarta.persistence.JoinColumn;
@@ -11,10 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.FetchType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.DecimalMin;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.ArrayList;
 
 // @Entity diz para o JPA que essa classe representa uma entidade do banco de dados.
 @Entity
@@ -48,20 +51,14 @@ public class Produto {
     @NotBlank(message = "O nome do produto é obrigatório.")
     private String nome;
 
-
-
     @ManyToOne
-   @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-
-
-    // Relacionamento inverso: um produto pode ter uma imagem.
+    // Relacionamento inverso: um produto pode ter várias imagens.
     // A chave estrangeira fica na tabela Imagem, não em Produto.
-    @OneToOne(mappedBy = "produto")
-    private Imagem imagem;
-
-
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    private List<Imagem> imagens = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -95,14 +92,12 @@ public class Produto {
         return categoria;
     }
 
-
-    // Retorna a imagem associada ao produto.
-    public Imagem getImagem() {
-        return imagem;
+    // Retorna as imagens associadas ao produto.
+    public List<Imagem> getImagens() {
+        return imagens;
     }
 
     // Setter do produto
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -131,8 +126,8 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    // Atualiza a imagem associada ao produto.
-    public void setImagem(Imagem imagem) {
-        this.imagem = imagem;
+    // Atualiza as imagens associadas ao produto.
+    public void setImagens(List<Imagem> imagens) {
+        this.imagens = imagens;
     }
 }
